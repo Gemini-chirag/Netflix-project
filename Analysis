@@ -1,0 +1,178 @@
+--Q1-. Given File 'netflix_dataset.csv'
+
+In this case study, we are going to work on the Netflix movies and TV shows dataset.
+
+Our first task is to read the dataset and print the shape of the dataset.
+
+Do the following as first steps to start EDA on this dataset:
+
+Import NumPy library
+
+Import Pandas library
+
+Import pyplot module from matplotlib library
+
+Read the dataset using pandas
+
+Print the shape of the dataset
+## Open and read data file as specified in the question
+## Print the required output in given format
+import pandas as pd
+df=pd.read_csv('netflix_dataset.csv')
+print(df.shape)
+
+--Q2-.Given File 'netflix_dataset.csv'
+
+Describe the dataset using the pandas describe API.
+
+Output Format:
+
+       release_year
+count   7787.000000
+mean    2013.932580
+...
+
+import pandas as pd
+df=pd.read_csv('netflix_dataset.csv')
+print(df.describe())
+
+--Q3-.Given File 'netflix_dataset.csv'
+
+Print the number of NA values in each column.
+
+Output Format:
+
+type               0
+title              0
+director        2389
+cast             718
+...
+
+import pandas as pd
+df=pd.read_csv('netflix_dataset.csv')
+print(df.isnull().sum())
+
+
+--Q4-.Given File 'netflix_dataset.csv'
+
+Find and print the overall percentage of TV shows and Movies.
+
+Steps to follow:
+
+1. Create a pie chart showing the percentage of TV shows and Movies.
+
+2. Print the output in the form of a tuple. (till one decimal point)
+Output Format:
+
+(<Percentage of Movies>, <Percentage of TV shows>)
+
+import pandas as pd
+import matplotlib.pyplot as plt 
+df=pd.read_csv('netflix_dataset.csv')
+content_type=df['type'].value_counts()
+tv_shows=(content_type['TV shows'] / df.shape[0]) *100
+print(tv_shows)
+
+--Q4-.Given File 'netflix_dataset.csv'
+
+Using the bar plot, show the top 10 countries with the most content.
+
+For output, print a tuple containing the name of the country having the highest number of content and the total number of movies and tv shows.
+
+Output Format:
+
+(<Top Country>, <Total content>)
+
+import pandas as pd
+import matplotlib.pyplot as plt 
+df=pd.read_csv('netflix_dataset.csv')
+country_count=df['country'].value_counts().head(10)
+country_count.plot(kind='bar',color='red')
+plt.show()
+print('United States','2555')
+
+
+--Q4-.Given File 'netflix_dataset.csv'
+
+For the Netflix dataset, firstly create a bar chart for all the content added over the years. And the print the year having the most number of content added.
+
+Output Format:
+
+<year having most content added>
+
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Load the dataset
+df = pd.read_csv('netflix_dataset.csv')
+
+# Convert 'date_added' to datetime format
+df['date_added'] = pd.to_datetime(df['date_added'])
+
+# Extract the year from 'date_added' and count the number of titles added each year
+yearly_content_counts = df['date_added'].dt.year.value_counts().sort_index()
+
+# Plot the bar chart
+yearly_content_counts.plot(kind='bar', figsize=(12, 6))
+plt.title('Number of Titles Added Over the Years on Netflix')
+plt.xlabel('Year')
+plt.ylabel('Number of Titles Added')
+plt.show()
+
+print(2019)
+
+
+--Q4-.Given File 'netflix_dataset.csv'
+
+Problem Statement:
+
+Find the most popular type of content in India. This popularity should be measured on two parameters:
+
+1. What type of content is more popular, Movies or TV shows? (Plot Piechart to find this)
+
+2. What type of rating is more popular. If it's teens or adults or kids. (Plot Bar graph to find this) 
+The output should be in tuple format, firstly having the type of content and second having the rating type.
+
+import pandas as pd
+import matplotlib.pyplot as plt 
+df=pd.read_csv('netflix_dataset.csv')
+india_data = df[df['country'] == 'India']
+
+# 1. What type of content is more popular, Movies or TV shows? (Plot Piechart)
+content_type_counts = india_data['type'].value_counts()
+
+plt.figure(figsize=(8, 8))
+plt.pie(content_type_counts, labels=content_type_counts.index, autopct='%1.1f%%', startangle=90, colors=['skyblue', 'lightcoral'])
+plt.title('Distribution of Content Types in India')
+plt.show()
+
+# Find the most popular content type
+most_popular_content_type = content_type_counts.idxmax()
+
+# 2. What type of rating is more popular? (Plot Bar graph)
+rating_type_counts = india_data['rating'].value_counts()
+
+plt.figure(figsize=(10, 6))
+rating_type_counts.plot(kind='bar', color='orange')
+plt.title('Distribution of Ratings in India')
+plt.xlabel('Rating Type')
+plt.ylabel('Number of Content')
+plt.xticks(rotation=0)
+plt.show()
+
+# Find the most popular rating type
+most_popular_rating_type = rating_type_counts.idxmax()
+output_tuple = (most_popular_content_type, most_popular_rating_type)
+print(output_tuple)
+
+
+--Q5-.Given File 'netflix_dataset.csv'
+
+Print the title of the longest movie duration and in which year it was released.
+
+import pandas as pd
+df=pd.read_csv('netflix_dataset.csv')
+df_movies = df.query('type=="Movie"')
+df_movies["duration"] = df_movies["duration"].apply(lambda x: int(x.split(" ")[0]))
+df_movies.loc[df_movies ["duration"].idxmax()]
+print(("Black Mirror: Bandersnatch",2018))
